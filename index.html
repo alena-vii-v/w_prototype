@@ -613,7 +613,8 @@ class Component extends DCLogic {
     var w = bw || window.innerWidth || 375, h = bh || window.innerHeight || (vv && vv.height) || 812;
     // installed to the home screen: take the whole physical screen (status bar and home indicator areas included)
     var standalone = window.navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-    if (standalone && screen && screen.width && screen.height) {
+    // iOS can leave a strip at the bottom of installed web apps that pages cannot draw into, so lay out in the area the page really gets
+    if (standalone && !bh && screen && screen.width && screen.height) {
       var portrait = w <= h;
       w = portrait ? Math.min(screen.width, screen.height) : Math.max(screen.width, screen.height);
       h = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
