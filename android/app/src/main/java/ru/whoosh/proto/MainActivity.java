@@ -10,7 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
-    private static final String URL = "https://alena-vii-v.github.io/w_prototype/";
+    private static final String URL = BuildConfig.START_URL;
     private WebView web;
 
     @Override

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['index.html', 'android/**', '.github/workflows/android.yml']
+    paths: ['index.html', 'v2/index.html', 'android/**', '.github/workflows/android.yml']
 permissions:
   contents: write
 concurrency: { group: android-apk, cancel-in-progress: true }
@@ -17,16 +17,20 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: '8.7' }
       - name: Bundle offline copy
-        run: mkdir -p android/app/src/main/assets && cp index.html icon-192.png android/app/src/main/assets/
+        run: |
+          mkdir -p android/app/src/v1/assets android/app/src/v2/assets
+          cp index.html android/app/src/v1/assets/
+          cp v2/index.html android/app/src/v2/assets/
       - name: Build APK
         working-directory: android
         run: gradle --no-daemon assembleDebug
       - name: Publish APK to the site
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk whoosh.apk
+          cp android/app/build/outputs/apk/v1/debug/app-v1-debug.apk whoosh.apk
+          cp android/app/build/outputs/apk/v2/debug/app-v2-debug.apk whoosh-v2.apk
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add whoosh.apk
+          git add whoosh.apk whoosh-v2.apk
           git commit -m "Build Android APK [skip ci]" || exit 0
           git pull --rebase origin main
           git push origin HEAD:main

@@ -1,9 +1,9 @@
-const C = "whoosh-v29";
+const C = "whoosh-v30";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(C).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
   e.waitUntil((async () => {
-    const old = (await caches.keys()).filter(k => k !== C);
+    const old = (await caches.keys()).filter(k => k.startsWith("whoosh-v") && k !== C);
     await Promise.all(old.map(k => caches.delete(k)));
     await self.clients.claim();
     // only when replacing an older build: reload open windows once so the new version shows right away

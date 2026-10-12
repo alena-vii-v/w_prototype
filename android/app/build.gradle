@@ -6,8 +6,22 @@ android {
         applicationId 'ru.whoosh.proto'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName '1.0'
+        versionCode 2
+        versionName '1.1'
     }
-    buildTypes { debug { debuggable false } }
+    buildFeatures { buildConfig true }
+    flavorDimensions 'ver'
+    productFlavors {
+        v1 {
+            dimension 'ver'
+            resValue 'string', 'app_name', 'Whoosh'
+            buildConfigField 'String', 'START_URL', '"https://alena-vii-v.github.io/w_prototype/"'
+        }
+        v2 {
+            dimension 'ver'
+            applicationIdSuffix '.v2'
+            resValue 'string', 'app_name', 'Whoosh 2'
+            buildConfigField 'String', 'START_URL', '"https://alena-vii-v.github.io/w_prototype/v2/"'
+        }
+    }
 }
