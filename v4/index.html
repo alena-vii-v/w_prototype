@@ -128,7 +128,15 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .cmore > div{overflow:hidden;min-height:0;display:flex;flex-direction:column;gap:4px}
 .cmore .feat{opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .3s}
 .cmore.open .feat{opacity:1;transform:none;transition:opacity .3s .08s,transform .35s .05s}
-.ctog{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;height:48px;color:#6E6E6E;font-weight:500;font-size:16px;line-height:20px;text-align:center}
+.ctog{display:inline-flex;align-self:flex-start;align-items:center;gap:4px;height:40px;padding:8px 12px;margin-top:6px;border-radius:1000px;color:#6E6E6E;font-weight:500;font-size:16px;line-height:20px}
+.ctog:active{background:#F5F5F5}
+.wcard4{padding:8px 0}
+.wcard4 .chead{height:48px;padding:0 0 0 20px}
+.wcard4 .chead b{font-weight:600;font-size:16px;line-height:20px;color:#000}
+.wcard4 .feats{padding:0 16px;gap:0}
+.wcard4 .cmore > div{gap:0}
+.wcard4 .feat{height:64px;padding:8px;gap:12px;border-radius:40px}
+.wcard4 .divider{height:1px;margin:0;background:#E0E0E0;transform:scaleY(.5)}
 .ctog svg{transition:transform .3s}
 .ctog.open svg{transform:rotate(180deg)}
 .aic{width:48px;height:48px;flex:0 0 48px;margin-right:12px;border-radius:50%;display:flex;align-items:center;justify-content:center}
@@ -512,14 +520,14 @@ img{display:block;-webkit-user-drag:none;user-select:none}
       <div class="hsub {{ swapCls }}" style="animation-delay:.04s">{{ prod.sub }}</div>
       <div class="hprice"><span class="badge {{ swapCls }}" style="animation-delay:.08s">{{ prod.price }}</span><sc-if value="{{ prod.hasOld }}" hint-placeholder-val="{{ false }}"><span class="pold">{{ prod.old }}</span></sc-if></div>
     </div>
-    <div class="wcard">
+    <div class="wcard wcard4">
       <div class="chead"><b>Условия</b></div>
       <div class="feats">
         <sc-for list="{{ prod.condTop }}" as="c" hint-placeholder-count="2"><div class="feat"><img src="{{ c.icon }}" alt=""><div class="ft"><b>{{ c.t }}</b><span>{{ c.s }}</span></div></div><sc-if value="{{ c.div }}" hint-placeholder-val="{{ true }}"><div class="divider"></div></sc-if></sc-for>
         <div class="{{ condMoreCls }}"><div>
           <sc-for list="{{ prod.condMore }}" as="c" hint-placeholder-count="5"><div class="divider"></div><div class="feat"><img src="{{ c.icon }}" alt=""><div class="ft"><b>{{ c.t }}</b><span>{{ c.s }}</span></div></div></sc-for>
         </div></div>
-        <button class="{{ condTogCls }}" onClick="{{ toggleConds }}"><span>{{ condTogLabel }}</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="#AAAAAA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        <button class="{{ condTogCls }}" onClick="{{ toggleConds }}"><span>{{ condTogLabel }}</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="#AAAAAA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
       </div>
     </div>
     <sc-if value="{{ prod.showAuto }}" hint-placeholder-val="{{ true }}">
