@@ -941,7 +941,7 @@ class Component extends DCLogic {
       bannerStarts: function () { self.openProd('starts', 'year', 'offers'); },
       condMoreCls: s.condsOpen ? 'cmore open' : 'cmore',
       condTogCls: s.condsOpen ? 'ctog open' : 'ctog',
-      condTogLabel: s.condsOpen ? 'Свернуть' : 'Больше условий',
+      condTogLabel: s.condsOpen ? 'Свернуть' : 'Подробнее',
       toggleConds: function () { self.hit(); self.setState({ condsOpen: !self.state.condsOpen }); },
       o2_0: function () { self.openProd('pass', 'night', 'offers'); },
       o2_1: function () { self.openProd('pass', 'day', 'offers'); },
