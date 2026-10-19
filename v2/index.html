@@ -867,7 +867,7 @@ class Component extends DCLogic {
       var per = (Math.floor(this.priceNum(d.p) / d.m * 10) / 10).toFixed(1).replace('.', ',');
       return {
         isMin: true, isUnlim: false, oneLine: true,
-        chips: ['15', '30', '55', '250'].map(function (k) { return { label: k + ' мин', badge: false, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k); } }; }),
+        chips: ['15', '30', '55', '250'].map(function (k) { return { label: k + ' мин', badge: k === '55', cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k); } }; }),
         title: d.m + ' минут на ' + d.per, sub: 'Зафиксируй цену ' + per + ' руб/мин', price: d.p,
         f1: 'Старты - отдельно', f1s: 'Спишем в начале каждой поездки', f2: 'Любое число поездок', f2s: 'После окончания включим базовый тариф', autoS: 'Сохраним скидку на минуты',
         cta: 'Оформить за ' + this.rub(total), plait: d.plait, hasPlait: !!d.plait
