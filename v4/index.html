@@ -888,7 +888,15 @@ class Component extends DCLogic {
       }
     };
     var h = {
-      ts: function (e) { if (e.touches && e.touches.length === 1) begin(e.currentTarget, e.touches[0].clientY, e.touches[0].clientX, e.target); },
+      ts: function (e) {
+        var el = e.currentTarget;
+        if (el && !el._swNative) {
+          el._swNative = true;
+          el.addEventListener('touchmove', function (ev) { if (st.el === el && st.on && st.lock === 'y' && st.dy > 0 && ev.cancelable) ev.preventDefault(); }, { passive: false });
+          el.addEventListener('touchcancel', function () { if (st.el === el) end(); }, { passive: true });
+        }
+        if (e.touches && e.touches.length === 1) begin(el, e.touches[0].clientY, e.touches[0].clientX, e.target);
+      },
       tm: function (e) { if (e.touches && e.touches.length === 1) move(e.touches[0].clientY, e.touches[0].clientX); },
       te: function () { end(); },
       md: function (e) {
