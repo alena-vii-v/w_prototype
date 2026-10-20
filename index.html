@@ -768,7 +768,8 @@ class Component extends DCLogic {
       }
     } catch (e) {}
     this._pkStack = this._pkStack || [];
-    this._pkStack.push({ kind: s.kind, opt: s.opt, origin: s.origin, auto: s.auto, add: s.add, ins: s.ins });
+    var elS = document.querySelector('.pk:not(.pk-ghost) .pk-scroll');
+    this._pkStack.push({ kind: s.kind, opt: s.opt, origin: s.origin, auto: s.auto, add: s.add, ins: s.ins, scroll: elS ? elS.scrollTop : 0, condsOpen: s.condsOpen });
     this.setState({ sheet: 'prod', kind: kind, opt: opt, loading: false, add: false, ins: false, auto: true, plaitOn: false, swapN: 0, indW: 0, indX: 0, condsOpen: false, condK: null });
     var el0 = document.querySelector('.pk:not(.pk-ghost)'); if (el0) { el0.style.animation = 'none'; el0.style.transition = 'none'; el0.style.transform = 'translateY(100%)'; }
     setTimeout(function () { self.restartPk(); }, 30);
@@ -781,8 +782,9 @@ class Component extends DCLogic {
     if (g) g.classList.remove('back');
     setTimeout(function () {
       if (g) g.remove();
-      self.setState({ sheet: 'prod', kind: prev.kind, opt: prev.opt, origin: prev.origin, auto: prev.auto, add: prev.add, ins: prev.ins, swapN: 0, condK: null });
-      setTimeout(function () { var e2 = document.querySelector('.pk:not(.pk-ghost)'); if (e2) { e2.style.animation = 'none'; e2.style.transition = ''; e2.style.transform = ''; } }, 0);
+      self.setState({ sheet: 'prod', kind: prev.kind, opt: prev.opt, origin: prev.origin, auto: prev.auto, add: prev.add, ins: prev.ins, swapN: 0, condK: null, condsOpen: !!prev.condsOpen });
+      var fix = function () { var e2 = document.querySelector('.pk:not(.pk-ghost)'); if (e2) { e2.style.animation = 'none'; e2.style.transition = ''; e2.style.transform = ''; var sc2 = e2.querySelector('.pk-scroll'); if (sc2) sc2.scrollTop = prev.scroll || 0; } };
+      setTimeout(fix, 0); setTimeout(fix, 60);
     }, 260);
     return true;
   }
