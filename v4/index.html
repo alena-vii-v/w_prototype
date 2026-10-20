@@ -683,6 +683,14 @@ class Component extends DCLogic {
     var x = on.offsetLeft, w = on.offsetWidth;
     if (x !== this.state.indX || w !== this.state.indW) this.setState({ indX: x, indW: w });
   }
+  swipeOpt(dir) {
+    var s = this.state;
+    if (s.sheet !== 'prod' || s.loading) return;
+    var keys = s.kind === 'min' ? Object.keys(this.MIN()) : s.kind === 'pass' ? Object.keys(this.PASS()) : s.kind === 'starts' ? Object.keys(this.STARTS()) : [];
+    var i = keys.indexOf(s.opt), j = i + dir;
+    if (i < 0 || j < 0 || j >= keys.length) return;
+    this.pickOpt(keys[j]);
+  }
   pickOpt(k) {
     this.hit();
     if (k === this.state.opt) return;
@@ -841,14 +849,19 @@ class Component extends DCLogic {
     this._sw = this._sw || {};
     if (this._sw[key]) { this._sw[key].close = close; return this._sw[key].h; }
     var st = { close: close, y0: 0, t0: 0, dy: 0, on: false, el: null };
+    if (key === 'pk') st.onX = function (d) { self.swipeOpt(d); };
     var k = function () { return scaled ? (self.state.vw || 375) / 375 : 1; };
-    var begin = function (el, y, x) {
-      st.x0 = x || 0; st.lock = null;
+    var begin = function (el, y, x, tgt) {
+      st.x0 = x || 0; st.ys = y; st.dx = 0; st.lock = null;
+      st.noX = !!(tgt && tgt.closest && tgt.closest('.hsc, .sheetimg'));
       var sc = scrollSel ? el.querySelector(scrollSel) : el;
       st.sc = sc; st.on = !sc || sc.scrollTop <= 2; st.el = el; st.y0 = y; st.t0 = Date.now(); st.dy = 0;
     };
     var move = function (y, x) {
       if (!st.el) return;
+      var dx0 = (x || 0) - st.x0, dy0 = y - st.ys;
+      if (st.lock === null && (Math.abs(dx0) > 8 || Math.abs(dy0) > 8)) st.lock = Math.abs(dx0) > Math.abs(dy0) * 1.2 ? 'x' : 'y';
+      if (st.lock === 'x') { st.dx = dx0; return; }
       if (!st.on) { if (st.sc && st.sc.scrollTop <= 0 && y > st.y0) { st.on = true; st.y0 = y; st.t0 = Date.now(); st.lock = 'y'; } else { st.y0 = y; return; } }
       var dy = y - st.y0, dx = (x || 0) - st.x0;
       if (st.lock === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) st.lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
@@ -859,6 +872,7 @@ class Component extends DCLogic {
       st.el.style.transform = 'translateY(' + (dy / k()) + 'px)';
     };
     var end = function () {
+      if (st.lock === 'x') { var ddx = st.dx; st.on = false; st.el = null; if (st.onX && !st.noX && Math.abs(ddx) > 50) st.onX(ddx < 0 ? 1 : -1); return; }
       if (!st.on || !st.el) { st.el = null; return; }
       var el = st.el, dy = st.dy, v = dy / Math.max(1, Date.now() - st.t0);
       st.on = false;
@@ -873,13 +887,13 @@ class Component extends DCLogic {
       }
     };
     var h = {
-      ts: function (e) { if (e.touches && e.touches.length === 1) begin(e.currentTarget, e.touches[0].clientY, e.touches[0].clientX); },
+      ts: function (e) { if (e.touches && e.touches.length === 1) begin(e.currentTarget, e.touches[0].clientY, e.touches[0].clientX, e.target); },
       tm: function (e) { if (e.touches && e.touches.length === 1) move(e.touches[0].clientY, e.touches[0].clientX); },
       te: function () { end(); },
       md: function (e) {
         if (e.button !== 0) return;
         if (e.target && e.target.tagName === 'IMG' && e.preventDefault) e.preventDefault();
-        begin(e.currentTarget, e.clientY, e.clientX);
+        begin(e.currentTarget, e.clientY, e.clientX, e.target);
         var mm = function (ev) { move(ev.clientY, ev.clientX); };
         var mu = function () { window.removeEventListener('mousemove', mm); window.removeEventListener('mouseup', mu); end(); };
         window.addEventListener('mousemove', mm); window.addEventListener('mouseup', mu);
