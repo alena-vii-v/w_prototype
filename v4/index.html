@@ -25,7 +25,8 @@ body{margin:0;position:fixed;left:0;top:0;right:0;bottom:0;padding-bottom:env(sa
 a{color:#FE6948}a:hover{color:#E04F2E}
 *{box-sizing:border-box}
 button{font-family:inherit;color:inherit;border:0;background:none;padding:0;margin:0;cursor:pointer;text-align:left}
-img{display:block;-webkit-user-drag:none;user-select:none}
+img{display:block;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+.pk-scroll,.sheetimg{overscroll-behavior:contain}
 .app{position:relative;margin:0;overflow:hidden;background:#000;width:100%}
 .stage{position:absolute;left:0;top:0;width:375px;transform-origin:0 0;overflow:hidden}
 .layer{position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden}
@@ -844,10 +845,11 @@ class Component extends DCLogic {
     var begin = function (el, y, x) {
       st.x0 = x || 0; st.lock = null;
       var sc = scrollSel ? el.querySelector(scrollSel) : el;
-      st.on = !sc || sc.scrollTop <= 0; st.el = el; st.y0 = y; st.t0 = Date.now(); st.dy = 0;
+      st.sc = sc; st.on = !sc || sc.scrollTop <= 2; st.el = el; st.y0 = y; st.t0 = Date.now(); st.dy = 0;
     };
     var move = function (y, x) {
-      if (!st.on || !st.el) return;
+      if (!st.el) return;
+      if (!st.on) { if (st.sc && st.sc.scrollTop <= 0 && y > st.y0) { st.on = true; st.y0 = y; st.t0 = Date.now(); st.lock = 'y'; } else { st.y0 = y; return; } }
       var dy = y - st.y0, dx = (x || 0) - st.x0;
       if (st.lock === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) st.lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
       if (st.lock !== 'y') return;
@@ -857,7 +859,7 @@ class Component extends DCLogic {
       st.el.style.transform = 'translateY(' + (dy / k()) + 'px)';
     };
     var end = function () {
-      if (!st.on || !st.el) return;
+      if (!st.on || !st.el) { st.el = null; return; }
       var el = st.el, dy = st.dy, v = dy / Math.max(1, Date.now() - st.t0);
       st.on = false;
       if (dy > 110 || (dy > 40 && v > 0.5)) {
@@ -876,6 +878,7 @@ class Component extends DCLogic {
       te: function () { end(); },
       md: function (e) {
         if (e.button !== 0) return;
+        if (e.target && e.target.tagName === 'IMG' && e.preventDefault) e.preventDefault();
         begin(e.currentTarget, e.clientY, e.clientX);
         var mm = function (ev) { move(ev.clientY, ev.clientX); };
         var mu = function () { window.removeEventListener('mousemove', mm); window.removeEventListener('mouseup', mu); end(); };
