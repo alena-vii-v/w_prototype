@@ -876,7 +876,8 @@ class Component extends DCLogic {
       if (!st.on || !st.el) { st.el = null; return; }
       var el = st.el, dy = st.dy, v = dy / Math.max(1, Date.now() - st.t0);
       st.on = false;
-      if (dy > 110 || (dy > 40 && v > 0.5)) {
+      var easy = key === 'cond' || (key === 'pk' && self._pkStack && self._pkStack.length > 0);
+      if (easy ? (dy > 56 || (dy > 18 && v > 0.25)) : (dy > 110 || (dy > 40 && v > 0.5))) {
         el.style.transition = 'transform .22s ease-in';
         el.style.transform = 'translateY(' + (el.offsetHeight + 60) + 'px)';
         setTimeout(function () { el.style.transition = ''; el.style.transform = ''; st.close(); }, 200);
