@@ -1096,7 +1096,7 @@ class Component extends DCLogic {
       toggleIns: function () { self.hit(); self.setState({ ins: !s.ins }); },
       openCond: function () { self.hit(); self.setState({ sheet: 'cond', condK: null }); },
       openAuto: function () { self.hit(); self.setState({ sheet: 'cond', condK: 'auto' }); },
-      openStartsInfo: function () { self.hit(); self.setState({ sheet: 'cond', condK: 'starts' }); },
+      openStartsInfo: function () { self.openProd('starts', 'month', s.origin); },
       openIns: function () { self.hit(); self.setState({ sheet: 'cond', condK: 'ins' }); },
       openPlait: function () { self.hit(); self.setState({ sheet: 'cond', condK: 'plait' }); },
       plaitPay: function () { self.hit(); self.setState({ sheet: 'cond', condK: 'plaitPhone' }); },
