@@ -1012,7 +1012,7 @@ class Component extends DCLogic {
     m.heroCls = m.oneLine ? 'hero one' : 'hero';
     m.hasOld = !!m.old; m.old = m.old || '';
     m.f3 = m.f3 || ''; m.f3s = m.f3s || '';
-    m.showAuto = !m.isStarts; m.showPay = !m.isUnlim && !m.isMin; m.showCHead = !m.isMin;
+    m.showAuto = !m.isStarts; m.showPay = !m.isUnlim && !m.isMin; m.showCHead = true;
     m.payCls = m.otherLast || (m.isStarts) ? 'act' : 'act paylast';
     m.autoS = m.isMin ? '' : (m.autoS || 'Продлим по окончании минут');
     m.autoBg = m.isPass ? '#2F6BFF' : '#2DA160';
