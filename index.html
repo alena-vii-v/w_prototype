@@ -96,7 +96,7 @@ img{display:block;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:
 .pold{color:#fff;font-weight:500;font-size:18px;line-height:20px;text-decoration:line-through;margin-left:4px}
 .hero-ill{position:absolute;right:6px;top:104px;width:170px;height:174px;object-fit:contain}
 .grab{position:absolute;top:12px;left:50%;margin-left:-16px;width:32px;height:4px;border-radius:2px;background:rgba(0,0,0,.12);z-index:6;pointer-events:none}
-.chips{position:absolute;left:0;right:0;top:44px;padding:0 20px;display:flex;gap:4px;z-index:2;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.chips{position:absolute;left:0;right:0;top:34px;padding:10px 20px 0;display:flex;gap:4px;z-index:2;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .chips::-webkit-scrollbar{display:none}
 .chips::after{content:"";flex:0 0 16px}
 .chip{flex:0 0 auto}
@@ -106,9 +106,10 @@ img{display:block;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:
 .chips.noind .chip.on{background:#fff}
 .chips.noind .chip-ind{transition:none;opacity:0}
 .cbadge{position:absolute;right:-6px;top:-9px;width:20px;height:20px;z-index:3;pointer-events:none}
+.ctag{position:absolute;right:-4px;top:-10px;height:16px;padding:0 5px;border-radius:8px;background:#FE6948;color:#fff;font-size:10px;line-height:16px;font-weight:500;white-space:nowrap;z-index:3;pointer-events:none}
 .hero{transition:height .35s cubic-bezier(.25,.8,.25,1)}
 .hsub,.hprice{transition:top .35s cubic-bezier(.25,.8,.25,1)}
-.chip-ind{position:absolute;top:0;left:0;height:32px;border-radius:1000px;background:#fff;z-index:0;box-shadow:0 2px 8px rgba(0,0,0,.10);transition:transform .5s cubic-bezier(.25,.8,.25,1), width .5s cubic-bezier(.25,.8,.25,1)}
+.chip-ind{position:absolute;top:10px;left:0;height:32px;border-radius:1000px;background:#fff;z-index:0;box-shadow:0 2px 8px rgba(0,0,0,.10);transition:transform .5s cubic-bezier(.25,.8,.25,1), width .5s cubic-bezier(.25,.8,.25,1)}
 .swap{animation:swapIn .55s cubic-bezier(.25,.8,.25,1) both}
 .swap2{animation:swapIn2 .55s cubic-bezier(.25,.8,.25,1) both}
 @keyframes swapIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -560,10 +561,10 @@ img{display:block;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:
       <div class="{{ chipsCls }}" ref="{{ chipsRef }}">
         <span class="chip-ind" style="width:{{ indW }}px;transform:translateX({{ indX }}px)"></span>
         <sc-for list="{{ prod.chips }}" as="c" hint-placeholder-count="4">
-          <button class="{{ c.cls }}" onClick="{{ c.pick }}">{{ c.label }}<sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><img class="cbadge" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAEOklEQVRoQ+2azW8bRRiHf+/sOk1JD6aRGiRa1XxdSW5RT3VaAlaIRHLhwFfKhVqpUCwQV+r8AQi3gGrEpaHlBsKRSmSU0m4viNwSuIFUglQORSoKUkncxjsv2lhJbBN7d3bGzlbaR7Jseaxon/zm890FYmJiYmJiIgOhC2xkM6mEpCGCTEFQsr6NXawyY9U+VFmmgrOGR1GYc+lktdI7ZANTIJ5gNEq2gkDLUspbrpSXe75YXEbUhTmXTspKb04QzwSVbCfvMl+wi+XLiJowGxRthoDVzao7aSpxgib87vggNqvzTDiODkKgAg5szOqOc4IGPP3SDBh506m2SxtCpOmzhT/QbWGezpxnRh5dRlea8AjJmpAmhOjGzFTAPhNWWkABzmVSUZD1YCAFKZWXLAEVKnAQIRhI8/TYDDohzN647fDSEwYG5/nc2HGjwpzLpMCcgwn6B4CzHwIH+2AE5iRcmTcqLCuUM7bWvvUeaPAE6PQkTMGEM0FTFgiAAE/ABP0DoOeer30eecVcyh4s34YJ4eo7L04YG7vjb+5+PnjIbMqgGSPCJIS5dIdPN35nMmXmJGczaW1hAfj+EeV061M+MQpjCP9rtds18vToEHOI7nx4oDYb77yO/D/dbUYmar+59xdw7y6wfr/2/vddKMM4qSXsViklLARn6n3Q8AtQ7uqe9B7wN58DP5SgtPvS6dKWTUrpkpQwCUmGInrCUtLjUICvfAxcuwojfHcVfHMeqvitxzYMwwtf1Y5g428gNF9+BP7pOjqBjQ4QWnr9X+DrYsdkOya8I+0JvHoWgSl8AL7zO7RIrP8TegwL75CtAf95GyqwtzRp4lfkE+0aIVy90uixp6HE0WegA4F9r1e0be3p00oYx56FCqT6D2qCA/RI0a6RCqU1lryCsDz51N7fe2N7L47qCVOCStqTlrDoW2YMIgTULPDrz7X19bdfQMOjtVm8/8hu+/bRMSyucLSFqxK3LOXaZtPFe4kuXAHf2N1I8NIisLQIGnsdODUJPNZX21N7p6eNFj2gDQQ4QSqYtt8PEsWyw9mMw+R/EmnAm6Hv3AZWfgRulMAtJLzlC0vXQS+/Bhx+IpTsFgkEqmASArCZzaQtwk1EFK9GTZfKLSYMxfPwdsrE0SrRNpAIfhdEICBVYBZRTfdieQ6mhRPFsuMSXUDUEEJpbhFQwO45kEeA3Uy3cAmzQWZm5UmruSgvK3DIVCUzJN7jEIni98o3Bwgh2G9pCczZl8pnEAJCSPZLWkdWeQzXQ4XyquhF2tvhoEuwJXI6sloJd/OJAGasiIQ9RZ9cC3+QMSm808Uf4jwxtBKoh8Br0rLy1qcLxpZDgmG2xSExojG+HbK4BPvBnF8FY9+F69m61yNwEuwdPHio1S3Xrec1CA4EL6NK81Qs+x7kIym8F5zNNBTLOykXExMTExODaPMf/7GY2NNjdl8AAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAABJRU5ErkJggg==" alt=""></sc-if></button>
+          <button class="{{ c.cls }}" onClick="{{ c.pick }}">{{ c.label }}<sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><img class="cbadge" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAEOklEQVRoQ+2azW8bRRiHf+/sOk1JD6aRGiRa1XxdSW5RT3VaAlaIRHLhwFfKhVqpUCwQV+r8AQi3gGrEpaHlBsKRSmSU0m4viNwSuIFUglQORSoKUkncxjsv2lhJbBN7d3bGzlbaR7Jseaxon/zm890FYmJiYmJiIgOhC2xkM6mEpCGCTEFQsr6NXawyY9U+VFmmgrOGR1GYc+lktdI7ZANTIJ5gNEq2gkDLUspbrpSXe75YXEbUhTmXTspKb04QzwSVbCfvMl+wi+XLiJowGxRthoDVzao7aSpxgib87vggNqvzTDiODkKgAg5szOqOc4IGPP3SDBh506m2SxtCpOmzhT/QbWGezpxnRh5dRlea8AjJmpAmhOjGzFTAPhNWWkABzmVSUZD1YCAFKZWXLAEVKnAQIRhI8/TYDDohzN647fDSEwYG5/nc2HGjwpzLpMCcgwn6B4CzHwIH+2AE5iRcmTcqLCuUM7bWvvUeaPAE6PQkTMGEM0FTFgiAAE/ABP0DoOeer30eecVcyh4s34YJ4eo7L04YG7vjb+5+PnjIbMqgGSPCJIS5dIdPN35nMmXmJGczaW1hAfj+EeV061M+MQpjCP9rtds18vToEHOI7nx4oDYb77yO/D/dbUYmar+59xdw7y6wfr/2/vddKMM4qSXsViklLARn6n3Q8AtQ7uqe9B7wN58DP5SgtPvS6dKWTUrpkpQwCUmGInrCUtLjUICvfAxcuwojfHcVfHMeqvitxzYMwwtf1Y5g428gNF9+BP7pOjqBjQ4QWnr9X+DrYsdkOya8I+0JvHoWgSl8AL7zO7RIrP8TegwL75CtAf95GyqwtzRp4lfkE+0aIVy90uixp6HE0WegA4F9r1e0be3p00oYx56FCqT6D2qCA/RI0a6RCqU1lryCsDz51N7fe2N7L47qCVOCStqTlrDoW2YMIgTULPDrz7X19bdfQMOjtVm8/8hu+/bRMSyucLSFqxK3LOXaZtPFe4kuXAHf2N1I8NIisLQIGnsdODUJPNZX21N7p6eNFj2gDQQ4QSqYtt8PEsWyw9mMw+R/EmnAm6Hv3AZWfgRulMAtJLzlC0vXQS+/Bhx+IpTsFgkEqmASArCZzaQtwk1EFK9GTZfKLSYMxfPwdsrE0SrRNpAIfhdEICBVYBZRTfdieQ6mhRPFsuMSXUDUEEJpbhFQwO45kEeA3Uy3cAmzQWZm5UmruSgvK3DIVCUzJN7jEIni98o3Bwgh2G9pCczZl8pnEAJCSPZLWkdWeQzXQ4XyquhF2tvhoEuwJXI6sloJd/OJAGasiIQ9RZ9cC3+QMSm808Uf4jwxtBKoh8Br0rLy1qcLxpZDgmG2xSExojG+HbK4BPvBnF8FY9+F69m61yNwEuwdPHio1S3Xrec1CA4EL6NK81Qs+x7kIym8F5zNNBTLOykXExMTExODaPMf/7GY2NNjdl8AAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAABJRU5ErkJggg==" alt=""></sc-if><sc-if value="{{ c.hasTag }}" hint-placeholder-val="{{ false }}"><span class="ctag">{{ c.tag }}</span></sc-if></button>
         </sc-for>
       </div>
-      <sc-if value="{{ prod.isMin }}" hint-placeholder-val="{{ false }}"><div class="hlabel">Пакет</div></sc-if>
+      <sc-if value="{{ prod.isMin }}" hint-placeholder-val="{{ false }}"><div class="hlabel">Пакет</div></sc-if><sc-if value="{{ prod.isPass }}" hint-placeholder-val="{{ false }}"><div class="hlabel">Проездной</div></sc-if>
       <div class="htitle {{ swapCls }}">{{ prod.title }}</div>
       <div class="hsub {{ swapCls }}" style="animation-delay:.04s">{{ prod.sub }}</div>
       <div class="hprice"><span class="badge {{ swapCls }}" style="animation-delay:.08s">{{ prod.price }}</span><sc-if value="{{ prod.hasOld }}" hint-placeholder-val="{{ false }}"><span class="pold">{{ prod.old }}</span></sc-if></div>
@@ -1057,14 +1058,14 @@ class Component extends DCLogic {
       night: { label: '3 часа', t2: 'на 3 часа', p: '635₽', old: '', mins: '180', plait: '' },
       day:   { label: '1 день',  t2: 'на 1 день',  p: '910₽',   old: '',     mins: '300',  plait: '455₽' },
       week:  { label: '7 дней',  t2: 'на 7 дней',  p: '3 370₽', old: '',     mins: '2000', plait: '1 685₽' },
-      month: { label: '30 дней', t2: 'на 30 дней', p: '10 190₽', old: '',    mins: '8000', plait: '' }
+      month: { label: '30 дней', t2: 'на 30 дней', p: '10 190₽', old: '12 740₽', tag: 'Скидка', mins: '8000', plait: '' }
     };
   }
   prodModel() {
     var m = this.prodModelRaw(), s = this.state;
     m.isMin = !!m.isMin; m.isUnlim = !!m.isUnlim; m.isStarts = !!m.isStarts; m.isPass = !!m.isPass;
     m.greenIcons = m.isUnlim; m.greyIcons = m.isMin; m.greyAuto = m.isMin || m.isPass;
-    m.heroCls = m.isMin ? 'hero one pkg' : (m.oneLine ? 'hero one' : 'hero');
+    m.heroCls = (m.isMin || m.isPass) ? 'hero one pkg' : (m.oneLine ? 'hero one' : 'hero');
     m.hasOld = !!m.old; m.old = m.old || '';
     m.f3 = m.f3 || ''; m.f3s = m.f3s || '';
     m.showAuto = !m.isStarts; m.showPay = !m.isUnlim && !m.isMin; m.showCHead = true;
@@ -1084,7 +1085,7 @@ class Component extends DCLogic {
   }
   prodModelRaw() {
     var s = this.state, self = this;
-    var chipsOf = function (obj) { return Object.keys(obj).map(function (k) { return { label: obj[k].label, badge: !!obj[k].badge, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k, true); } }; }); };
+    var chipsOf = function (obj) { return Object.keys(obj).map(function (k) { return { label: obj[k].label, badge: !!obj[k].badge, hasTag: !!obj[k].tag, tag: obj[k].tag || '', cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k, true); } }; }); };
     if (s.kind === 'starts') {
       var ST = this.STARTS(), st = ST[s.opt];
       return { isStarts: true, oneLine: true, chips: chipsOf(ST), title: 'Старты ' + st.t2, sub: 'Выгода в каждой поездке', price: st.p, old: st.old || '',
@@ -1094,8 +1095,9 @@ class Component extends DCLogic {
     if (s.kind === 'pass') {
       var PS = this.PASS(), ps = PS[s.opt];
       var pm = String(ps.mins).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      var pper = String(Math.round(this.priceNum(ps.p) / Number(ps.mins) * 10) / 10).replace('.', ',');
       return { isPass: true, oneLine: true, chips: chipsOf(PS), title: pm + ' минут\n0₽ старт', sub: '', price: ps.p, old: ps.old,
-        f1: '0₽ - старт поездки', f1s: 'Любое количество поездок', f2: pm + ' минут в проездном', f2s: 'Остаток не переносится', autoS: 'Продлим по окончании минут',
+        f1: pper + '₽ - минута в проездном', f1s: '9,2₽ - минута в базовом тарифе', f2: '0₽ - старт', f2s: 'Старты входят в проездной', autoS: 'Продлим по окончании минут',
         cta: 'Оформить за ' + ps.p, plait: ps.plait, hasPlait: !!ps.plait };
     }
     if (s.kind === 'min') {
