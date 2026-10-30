@@ -3,6 +3,8 @@ package ru.whoosh.proto;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.HapticFeedbackConstants;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -32,6 +34,18 @@ public class MainActivity extends Activity {
                 if (req.isForMainFrame()) v.loadUrl("file:///android_asset/index.html");
             }
         });
+        web.setHapticFeedbackEnabled(true);
+        web.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void haptic() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        web.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                    }
+                });
+            }
+        }, "WhooshNative");
         setContentView(web);
         if (savedInstanceState != null) web.restoreState(savedInstanceState);
         else web.loadUrl(URL);

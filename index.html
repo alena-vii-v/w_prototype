@@ -789,7 +789,17 @@ class Component extends DCLogic {
     if (i < 0 || j < 0 || j >= keys.length) return;
     this.pickOpt(keys[j]);
   }
+  haptic() {
+    try { if (window.WhooshNative && window.WhooshNative.haptic) { window.WhooshNative.haptic(); return; } } catch (e) {}
+    try { if (navigator.vibrate && navigator.vibrate(10)) return; } catch (e) {}
+    try {
+      var l = this._hl;
+      if (!l || !l.isConnected) { l = document.createElement('label'); l.setAttribute('aria-hidden', 'true'); l.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;overflow:hidden'; var i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch', ''); i.tabIndex = -1; l.appendChild(i); document.body.appendChild(l); this._hl = l; }
+      l.click();
+    } catch (e) {}
+  }
   pickOpt(k) {
+    this.haptic();
     this.hit();
     if (k === this.state.opt) return;
     this.setState({ opt: k, swapN: (this.state.swapN || 0) + 1 });
