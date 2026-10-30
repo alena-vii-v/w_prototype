@@ -770,7 +770,9 @@ class Component extends DCLogic {
     this._lock = false;
     this._onResize = this._onResize.bind(this);
   }
-  componentDidMount() { this._onResize(); window.addEventListener('resize', this._onResize); window.addEventListener('orientationchange', this._onResize); if (window.visualViewport) window.visualViewport.addEventListener('resize', this._onResize); setTimeout(this._onResize, 300); }
+  componentDidMount() {
+    var selfH = this; document.addEventListener('click', function (e) { var t = e.target && e.target.closest && e.target.closest('.chip'); if (t) selfH.haptic(); }, true);
+    this._tapHaptic = true; this._onResize(); window.addEventListener('resize', this._onResize); window.addEventListener('orientationchange', this._onResize); if (window.visualViewport) window.visualViewport.addEventListener('resize', this._onResize); setTimeout(this._onResize, 300); }
   componentDidUpdate() { this.checkBottom(); this.measureChips(); }
   measureChips() {
     var box = this._chips && this._chips.isConnected ? this._chips : null;
@@ -792,14 +794,15 @@ class Component extends DCLogic {
   haptic() {
     try { if (window.WhooshNative && window.WhooshNative.haptic) { window.WhooshNative.haptic(); return; } } catch (e) {}
     try { if (navigator.vibrate && navigator.vibrate(10)) return; } catch (e) {}
+    // iOS 18+: a click on a <label> of an <input switch> plays the system tick (must run inside the tap)
     try {
-      var l = this._hl;
-      if (!l || !l.isConnected) { l = document.createElement('label'); l.setAttribute('aria-hidden', 'true'); l.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;overflow:hidden'; var i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch', ''); i.tabIndex = -1; l.appendChild(i); document.body.appendChild(l); this._hl = l; }
-      l.click();
+      var l = document.createElement('label'); l.setAttribute('aria-hidden', 'true'); l.style.display = 'none';
+      var i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch', '');
+      l.appendChild(i); document.head.appendChild(l); l.click(); document.head.removeChild(l);
     } catch (e) {}
   }
-  pickOpt(k) {
-    this.haptic();
+  pickOpt(k, fromTap) {
+    if (!fromTap) this.haptic();
     this.hit();
     if (k === this.state.opt) return;
     this.setState({ opt: k, swapN: (this.state.swapN || 0) + 1 });
@@ -1077,7 +1080,7 @@ class Component extends DCLogic {
   }
   prodModelRaw() {
     var s = this.state, self = this;
-    var chipsOf = function (obj) { return Object.keys(obj).map(function (k) { return { label: obj[k].label, badge: !!obj[k].badge, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k); } }; }); };
+    var chipsOf = function (obj) { return Object.keys(obj).map(function (k) { return { label: obj[k].label, badge: !!obj[k].badge, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k, true); } }; }); };
     if (s.kind === 'starts') {
       var ST = this.STARTS(), st = ST[s.opt];
       return { isStarts: true, oneLine: true, chips: chipsOf(ST), title: 'Старты ' + st.t2, sub: 'Выгода в каждой поездке', price: st.p, old: st.old || '',
@@ -1096,7 +1099,7 @@ class Component extends DCLogic {
       var per = String(Math.round(this.priceNum(d.p) / d.m * 10) / 10).replace('.', ',');
       return {
         isMin: true, isUnlim: false, oneLine: true,
-        chips: ['15', '30', '55', '250'].map(function (k) { return { label: k + ' мин', badge: false, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k); } }; }),
+        chips: ['15', '30', '55', '250'].map(function (k) { return { label: k + ' мин', badge: false, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k, true); } }; }),
         title: d.m + ' минут\nна ' + d.per, sub: '', price: d.p, old: d.old || '',
         f1: '50₽ - старт поездки', f1s: 'Оплата в начале каждой поездки', f2: 'Поездки не ограничены', f2s: 'Минуты делятся на все поездки', autoS: 'Сохраним скидку на минуты',
         cta: 'Оформить за ' + this.rub(total), plait: d.plait, hasPlait: !!d.plait
