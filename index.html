@@ -1131,7 +1131,7 @@ class Component extends DCLogic {
         isMin: true, isUnlim: false, oneLine: true,
         chips: ['15', '30', '55', '250'].map(function (k) { return { label: k + ' мин', badge: false, cls: k === s.opt ? 'chip on' : 'chip', pick: function () { self.pickOpt(k, true); } }; }),
         title: d.m + ' минут\nна ' + d.per, sub: '', price: d.p, old: '',
-        f1: per + '₽ - минута в пакете', f1s: '9,2₽ - минута в базовом тарифе', f2: '50₽ - старт', f2s: 'Оплата отдельно в каждой поездке', autoS: 'Сохраним скидку на минуты',
+        f1: per + '₽ - минута в пакете', f1s: '9,2₽ - минута в базовом тарифе', f2: '50₽ - старт каждой поездки', f2s: 'Оплачивается отдельно', autoS: 'Сохраним скидку на минуты',
         cta: 'Оформить за ' + this.rub(total), plait: d.plait, hasPlait: !!d.plait
       };
     }
