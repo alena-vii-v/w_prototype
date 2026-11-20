@@ -23,6 +23,12 @@ android {
             resValue 'string', 'app_name', 'Whoosh 2'
             buildConfigField 'String', 'START_URL', '"https://alena-vii-v.github.io/w_prototype/v2/"'
         }
+        en {
+            dimension 'ver'
+            applicationIdSuffix '.en'
+            resValue 'string', 'app_name', 'Whoosh EN'
+            buildConfigField 'String', 'START_URL', '"https://alena-vii-v.github.io/w_prototype/en/"'
+        }
         v4 {
             dimension 'ver'
             applicationIdSuffix '.v4'
